@@ -4,9 +4,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import CmpHome from "./components/CmpHome.vue";
 import CmpAbout from "./components/CmpAbout.vue";
 
-import CmpGrupoUsuario from "./components/CmpGrupoUsuario.vue";
-import CmpUsuario from "./components/CmpUsuario.vue";
-import CmpProfesor from "./components/CmpProfesor.vue";
 const routes = [
   {
     path: "/",
@@ -18,11 +15,11 @@ const routes = [
   },
   {
     path: "/GrupoUsuario",
-    component: CmpGrupoUsuario,
+    component: CmpHome,
   },
   {
     path: "/Usuario",
-    component: CmpUsuario,
+    component: CmpHome,
   },
   {
     path: "/",
@@ -30,11 +27,11 @@ const routes = [
   },
   {
     path: "/Profesor",
-    component: CmpProfesor,
+    component: CmpHome,
   },
   {
     path: "/",
-    component: CmpProfesor,
+    component: CmpHome,
   },
   {
     path: "/",
