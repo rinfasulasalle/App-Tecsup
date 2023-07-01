@@ -23,44 +23,22 @@ export default {
         {
           label: "Home",
           icon: "pi pi-fw pi-home",
-          items: [
-            {
-              label: "Home",
-              icon: "pi pi-fw pi-align-justify",
-              to: "/",
-            },
-            {
-              label: "Base de datos",
-              icon: "pi pi-fw pi-database",
-              to: "/about",
-            },
-          ],
+          to: "/",
         },
         {
-          label: "Gestión usuarios",
-          icon: "pi pi-fw pi-user-edit",
-          items: [
-            {
-              label: "GrupoUsuario",
-              icon: "pi pi-fw pi-users",
-              to: "/GrupoUsuario",
-            },
-            {
-              label: "Usuario",
-              icon: "pi pi-fw pi-user-plus",
-              to: "/Usuario",
-            },
-            {
-              label: "Estudiante",
-              icon: "pi pi-fw pi-user-plus",
-              to: "/",
-            },
-            {
-              label: "Profesor",
-              icon: "pi pi-fw pi-user-plus",
-              to: "/Profesor",
-            },
-          ],
+          label: "Compactadora",
+          icon: "pi pi-fw pi-database",
+          to: "/CmpCompactadora",
+        },
+        {
+          label: "Oruga",
+          icon: "pi pi-fw pi-database",
+          to: "/CmpOruga",
+        },
+        {
+          label: "Neumaticos",
+          icon: "pi pi-fw pi-database",
+          to: "/CmpNeumaticos",
         },
         {
           label: "Quit",
@@ -70,4 +48,44 @@ export default {
     };
   },
 };
+/*
+export default {
+  data() {
+    return {
+      items: [
+        {
+          label: "Home",
+          icon: "pi pi-fw pi-home",
+          items: [
+            {
+              label: "Home",
+              icon: "pi pi-fw pi-align-justify",
+              to: "/",
+            },
+            {
+              label: "Compactadora",
+              icon: "pi pi-fw pi-database",
+              to: "/CmpCompactadora",
+            },
+          ],
+        },
+        {
+          label: "Compactadora",
+          icon: "pi pi-fw pi-database",
+          to: "/CmpCompactadora",
+        },
+        {
+          label: "Oruga",
+          icon: "pi pi-fw pi-database",
+          to: "/CmpOruga",
+        },
+        {
+          label: "Quit",
+          icon: "pi pi-fw pi-power-off",
+        },
+      ],
+    };
+  },
+};
+ */
 </script>
