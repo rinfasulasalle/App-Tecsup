@@ -9,7 +9,7 @@ import "primevue/resources/themes/lara-light-indigo/theme.css";
 //import "primevue/resources/themes/arya-green/theme.css";
 //import "primevue/resources/themes/lara-light-blue/theme.css";
 //import "primevue/resources/themes/lara-light-indigo/theme.css";
-//import "primevue/resources/themes/lara-light-purple/theme.css";
+import "primevue/resources/themes/lara-light-purple/theme.css";
 //import "primevue/resources/themes/lara-light-teal/theme.css";
 //import "primevue/resources/themes/lara-dark-blue/theme.css";
 
@@ -31,6 +31,7 @@ import Listbox from "primevue/listbox";
 import RadioButton from "primevue/radiobutton";
 import Checkbox from "primevue/checkbox";
 import Knob from "primevue/knob";
+import Slider from "primevue/slider";
 
 const app = createApp(App);
 app.use(PrimeVue);
@@ -46,5 +47,6 @@ app.component("Listbox", Listbox);
 app.component("RadioButton", RadioButton);
 app.component("Checkbox", Checkbox);
 app.component("Knob", Knob);
+app.component("Slider", Slider);
 
 app.mount("#app");

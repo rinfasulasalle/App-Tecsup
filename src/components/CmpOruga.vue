@@ -1,99 +1,93 @@
 <template>
   <div>
-    <!-- Factor de corrección -->
-    <h3>1. FACTORES DE CORRECCIÓN</h3>
+    <h2>Calculadora de producción</h2>
+    <!-- Input field for "Pendiente cuesta arriba" -->
     <div>
       <label>Pendiente cuesta arriba:</label>
-      <Knob
+      <InputText v-model.number="pendiente" /><br /><br />
+      <!-- Slider for selecting "Pendiente cuesta arriba" -->
+      <Slider
+        class="custom-slider"
         v-model="pendiente"
-        :min="-2.0"
+        :min="0.2"
         :max="1.8"
-        :step="0.25"
-        :decimal-places="1"
+        :step="0.2"
       />
     </div>
+    <br />
+    <!-- Dropdown for selecting "Experiencia del Operador" -->
     <div>
-      <label>Experiencia del operador:</label>
+      <label>Experiencia del Operador:</label>
       <Dropdown
-        v-model="experiencia"
+        v-model="xpOperador"
         :options="experienciaOptions"
-        optionLabel="label"
-        optionValue="value"
+        placeholder="Seleccionar"
       />
     </div>
+    <!-- Checkbox for selecting "Presencia de neblina" -->
     <div>
       <label>Presencia de neblina:</label>
-      <Checkbox v-model="neblina" />
+      <Checkbox v-model="neblina" binary="true" />
     </div>
+    <!-- Dropdown for selecting "Eficiencia de trabajo" -->
     <div>
-      <label>Eficiencia del trabajo:</label>
-      <RadioButton
+      <label>Eficiencia de trabajo:</label>
+      <Dropdown
         v-model="eficiencia"
-        name="eficiencia"
-        value="0.50"
-        label="50 min/h"
-      />
-      <RadioButton
-        v-model="eficiencia"
-        name="eficiencia"
-        value="0.40"
-        label="40 min/h"
+        :options="eficienciaOptions"
+        placeholder="Seleccionar"
       />
     </div>
+    <!-- Dropdown for selecting "Material" -->
     <div>
       <label>Material:</label>
       <Dropdown
         v-model="material"
         :options="materialOptions"
-        optionLabel="label"
-        optionValue="value"
+        placeholder="Seleccionar"
       />
     </div>
+    <!-- Input field for "Densidad" -->
     <div>
       <label>Densidad:</label>
-      <Knob
-        v-model="densidad"
-        :min="0"
-        :max="1"
-        :step="0.01"
-        :decimal-places="2"
-      />
+      <InputNumber v-model="densidad" />
     </div>
+    <!-- Dropdown for selecting "Factor de carga" -->
     <div>
       <label>Factor de carga:</label>
-      <Knob
+      <Dropdown
         v-model="factorCarga"
-        :min="0"
-        :max="1"
-        :step="0.01"
-        :decimal-places="2"
+        :options="factorCargaOptions"
+        placeholder="Seleccionar"
       />
     </div>
-    <Button label="Calcular" @click="calcularProduccion" />
-
-    <!-- Diálogo de resultados -->
-    <Dialog v-model="showDialog" header="Resultados">
-      <p>Total factores de corrección: {{ totalFactoresCorreccion }}</p>
-      <p>Clave del tractor: {{ claveTractor }}</p>
-      <p>Producción en yd3 s/h: {{ produccion }}</p>
-    </Dialog>
+    <!-- Button for triggering the calculation -->
+    <button @click="logData">Calcular</button>
   </div>
 </template>
-
 <script>
 export default {
   data() {
     return {
-      pendiente: 0,
-      experiencia: null,
+      // Valores iniciales para las variables
+      pendiente: 1,
+      xpOperador: null,
+      neblina: false,
+      eficiencia: null,
+      material: null,
+      densidad: 2.3 / 31,
+      factorCarga: null,
+      pendienteOptions: [0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8],
+      factorCargaOptions: [0.67, 0.75, 0.55, 0.74, 0.66, 0.82, 0.81],
       experienciaOptions: [
         { label: "Excelente", value: 1 },
         { label: "De fragmentación mediana", value: 0.75 },
-        { label: "Mal fragmentada", value: 0.6 },
+        { label: "Mal Fragmentada", value: 0.6 },
       ],
-      neblina: false,
-      eficiencia: "50",
-      material: null,
+      eficienciaOptions: [
+        { label: "50 min/h", value: 0.83 },
+        { label: "40 min/h", value: 0.67 },
+      ],
       materialOptions: [
         { label: "Suelto y amontonado", value: 1.2 },
         { label: "Difícil de cortar con cilindro inclinación", value: 0.8 },
@@ -101,62 +95,27 @@ export default {
         { label: "Difícil de acarrear", value: 0.8 },
         { label: "Rocas desgarradas", value: 0.6 },
       ],
-      densidad: 0,
-      factorCarga: 0,
-      totalFactoresCorreccion: 0,
-      claveTractor: null,
-      produccion: 0,
-      showDialog: false,
     };
   },
-
   methods: {
-    calcularProduccion() {
-      // Calcular el total de factores de corrección
-      this.totalFactoresCorreccion =
-        this.pendiente *
-        (this.experiencia || 0) *
-        (this.neblina ? 0.8 : 1) *
-        (this.eficiencia === "50" ? 0.83 : 0.67) *
-        (this.material || 1) *
-        this.densidad *
-        this.factorCarga;
-
-      console.log("Pendiente:", this.pendiente);
-      console.log("Experiencia del operador:", this.experiencia);
-      console.log("Presencia de neblina:", this.neblina);
-      console.log("Eficiencia del trabajo:", this.eficiencia);
-      console.log("Material:", this.material);
-      console.log("Densidad:", this.densidad);
-      console.log("Factor de carga:", this.factorCarga);
-      console.log(
-        "Total factores de corrección:",
-        this.totalFactoresCorreccion
-      );
-
-      // Obtener el valor de la clave del tractor
-      const clavesTractor = {
-        A: 3600,
-        B: 2550,
-        C: 1750,
-        D: 1050,
-        E: 900,
-        F: 850,
-        G: 750,
-        H: 500,
-      };
-      this.claveTractor = clavesTractor[this.claveTractor];
-
-      console.log("Clave del tractor:", this.claveTractor);
-
-      // Calcular la producción en yd3 s/h
-      this.produccion = this.totalFactoresCorreccion * this.claveTractor;
-
-      console.log("Producción en yd3 s/h:", this.produccion);
-
-      // Mostrar el diálogo de resultados
-      this.showDialog = true;
+    logData() {
+      console.table({
+        pendiente: this.pendiente,
+        xpOperador: this.xpOperador,
+        neblina: this.neblina ? 0.8 : 1,
+        eficiencia: this.eficiencia,
+        material: this.material,
+        densidad: this.densidad,
+        factorCarga: this.factorCarga,
+      });
     },
   },
 };
 </script>
+
+<style>
+.custom-slider {
+  width: 200px; /* Ajusta el ancho según tus necesidades */
+  margin: 0 auto; /* Alinea horizontalmente al centro */
+}
+</style>

@@ -1,77 +1,129 @@
 <template>
-  <div>
+  <div class="neumaticos">
     <h2>Formulario para calcular la vida útil de un neumático</h2>
-    <div>
+    <div class="p-field">
       <label for="mantenimiento">Mantenimiento:</label>
-      <select v-model="mantenimiento" id="mantenimiento">
-        <option value="1.090">Excelente</option>
-        <option value="0.981">De fragmentación mediana</option>
-        <option value="0.763">Mal fragmentado</option>
-      </select>
+      <!-- Dropdown para seleccionar el mantenimiento -->
+      <Dropdown
+        v-model="mantenimiento"
+        :options="mantenimientoOptions"
+        optionLabel="label"
+        optionValue="value"
+      ></Dropdown>
     </div>
-    <div>
+    <div class="p-field">
       <label for="velocidades">Velocidades Máximas:</label>
-      <select v-model="velocidades" id="velocidades">
-        <option value="1.090">16 km/h ~ 10 mph</option>
-        <option value="0.872">32 km/h ~ 20 mph</option>
-        <option value="0.763">48 km/h ~ 30 mph</option>
-      </select>
+      <!-- Dropdown para seleccionar las velocidades máximas -->
+      <Dropdown
+        v-model="velocidades"
+        :options="velocidadesOptions"
+        optionLabel="label"
+        optionValue="value"
+      ></Dropdown>
     </div>
-    <div>
+    <div class="p-field">
       <label for="condiciones">Condiciones del Terreno:</label>
-      <select v-model="condiciones" id="condiciones">
-        <option value="1.090">Tierra Blanda - sin roca</option>
-        <option value="0.981">Tierra Blanda - Algunas rocas</option>
-        <option value="0.981">Bien mantenido - Camino de grava</option>
-        <option value="0.763">Mal mantenido - Camino de grava</option>
-        <option value="0.654">Tierra Blanda - sin roca</option>
-      </select>
+      <!-- Dropdown para seleccionar las condiciones del terreno -->
+      <Dropdown
+        v-model="condiciones"
+        :options="condicionesOptions"
+        optionLabel="label"
+        optionValue="value"
+      ></Dropdown>
     </div>
-    <div>
+    <div class="p-field">
       <label for="posiciones">Posición de las Ruedas:</label>
-      <select v-model="posiciones" id="posiciones">
-        <option value="1.090">Remolque</option>
-        <option value="0.981">Delante</option>
-        <option value="0.872">Impulsora "Descarga trasera"</option>
-        <option value="0.763">Impulsora "Descarga por el fondo"</option>
-        <option value="0.654">Impulsora "Mototraíla"</option>
-      </select>
+      <!-- Dropdown para seleccionar la posición de las ruedas -->
+      <Dropdown
+        v-model="posiciones"
+        :options="posicionesOptions"
+        optionLabel="label"
+        optionValue="value"
+      ></Dropdown>
     </div>
-    <div>
+    <div class="p-field">
       <label for="carga">Cargas:</label>
-      <select v-model="carga" id="carga">
-        <option value="1.090">T&RA/ETRTO* Carga recomendada</option>
-        <option value="0.872">20% Sobrecarga</option>
-        <option value="0.545">40% Sobrecarga</option>
-      </select>
+      <!-- Dropdown para seleccionar las cargas -->
+      <Dropdown
+        v-model="carga"
+        :options="cargaOptions"
+        optionLabel="label"
+        optionValue="value"
+      ></Dropdown>
     </div>
-    <div>
+    <div class="p-field">
       <label for="curvas">Curvas:</label>
-      <select v-model="curvas" id="curvas">
-        <option value="1.090">Ninguna</option>
-        <option value="0.981">Media</option>
-        <option value="0.872">Severa</option>
-      </select>
+      <!-- Dropdown para seleccionar el tipo de curvas -->
+      <Dropdown
+        v-model="curvas"
+        :options="curvasOptions"
+        optionLabel="label"
+        optionValue="value"
+      ></Dropdown>
     </div>
-    <div>
+    <div class="p-field">
       <label for="pendiente">Pendiente:</label>
-      <select v-model="pendiente" id="pendiente">
-        <option value="1.090">Nivel</option>
-        <option value="0.981">5% máximo</option>
-        <option value="0.763">15% máximo</option>
-      </select>
+      <!-- Dropdown para seleccionar el tipo de pendiente -->
+      <Dropdown
+        v-model="pendiente"
+        :options="pendienteOptions"
+        optionLabel="label"
+        optionValue="value"
+      ></Dropdown>
     </div>
-    <div>
+    <div class="p-field">
       <label for="otras">Otras combinaciones varias:</label>
-      <select v-model="otras" id="otras">
-        <option value="1.090">Ninguna</option>
-        <option value="0.981">Media</option>
-        <option value="0.872">Severa</option>
-      </select>
+      <!-- Dropdown para seleccionar otras combinaciones -->
+      <Dropdown
+        v-model="otras"
+        :options="otrasOptions"
+        optionLabel="label"
+        optionValue="value"
+      ></Dropdown>
     </div>
-    <button @click="logData">Calcular</button>
+    <Button @click="logData" class="p-button-success" label="Calcular"></Button>
+    <div>factorTotal: {{ factorTotal }}</div>
 
     <div>Vida Promedio: {{ vidaPromedio }}</div>
+
+    <Button
+      @click="calcularVidaUtil"
+      class="p-button-primary"
+      label="Calcular Vida Util"
+    ></Button>
+    <div>Vida util: {{ vidaUtil }}</div>
+
+    <!-- Diálogo para mostrar el factorTotal -->
+    <Dialog
+      v-model="showFactorDialog"
+      :header="dialogHeaderFactorDialog"
+      :visible="showFactorDialog"
+      :closable="false"
+    >
+      <p>Con los datos registrados, el factor Total es de: {{ factorTotal }}</p>
+      <Button
+        @click="showFactorDialog = false"
+        class="p-button-secondary"
+        label="Cerrar"
+      ></Button>
+    </Dialog>
+
+    <!-- Diálogo para mostrar la vida útil -->
+    <Dialog
+      v-model="showVidaDialog"
+      :header="dialogHeaderVidaDialog"
+      :visible="showVidaDialog"
+      :closable="false"
+    >
+      <p>
+        Con factor Total {{ factorTotal }}, la vida util es de {{ vidaUtil }}
+      </p>
+      <Button
+        @click="showVidaDialog = false"
+        class="p-button-secondary"
+        label="Cerrar"
+      ></Button>
+    </Dialog>
   </div>
 </template>
 
@@ -79,16 +131,65 @@
 export default {
   data() {
     return {
-      mantenimiento: 0,
-      velocidades: 0,
-      condiciones: 0,
-      posiciones: 0,
-      carga: 0,
-      curvas: 0,
-      pendiente: 0,
-      otras: 0,
+      mantenimiento: null,
+      velocidades: null,
+      condiciones: null,
+      posiciones: null,
+      carga: null,
+      curvas: null,
+      pendiente: null,
+      otras: null,
       factorTotal: 0,
       vidaPromedio: (2000 + 1500) / 2,
+      vidaUtil: 0.0,
+      showFactorDialog: false,
+      showVidaDialog: false,
+      dialogHeaderFactorDialog: "DIALOGO DE FACTOR TOTAL",
+      dialogHeaderVidaDialog: "DIALOGO DE VIDA UTIL",
+      mantenimientoOptions: [
+        { label: "Excelente", value: 1.09 },
+        { label: "De fragmentación mediana", value: 0.981 },
+        { label: "Mal fragmentado", value: 0.763 },
+      ],
+      velocidadesOptions: [
+        { label: "16 km/h ~ 10 mph", value: 1.09 },
+        { label: "32 km/h ~ 20 mph", value: 0.872 },
+        { label: "48 km/h ~ 30 mph", value: 0.763 },
+      ],
+      condicionesOptions: [
+        { label: "Tierra Blanda - sin roca", value: 1.09 },
+        { label: "Tierra Blanda - Algunas rocas", value: 0.981 },
+        { label: "Bien mantenido - Camino de grava", value: 0.981 },
+        { label: "Mal mantenido - Camino de grava", value: 0.763 },
+        { label: "Tierra Blanda - sin roca", value: 0.654 },
+      ],
+      posicionesOptions: [
+        { label: "Remolque", value: 1.09 },
+        { label: "Delante", value: 0.981 },
+        { label: 'Impulsora "Descarga trasera"', value: 0.872 },
+        { label: 'Impulsora "Descarga por el fondo"', value: 0.763 },
+        { label: 'Impulsora "Mototraíla"', value: 0.654 },
+      ],
+      cargaOptions: [
+        { label: "T&RA/ETRTO* Carga recomendada", value: 1.09 },
+        { label: "20% Sobrecarga", value: 0.872 },
+        { label: "40% Sobrecarga", value: 0.545 },
+      ],
+      curvasOptions: [
+        { label: "Ninguna", value: 1.09 },
+        { label: "Media", value: 0.981 },
+        { label: "Severa", value: 0.872 },
+      ],
+      pendienteOptions: [
+        { label: "Nivel", value: 1.09 },
+        { label: "5% máximo", value: 0.981 },
+        { label: "15% máximo", value: 0.763 },
+      ],
+      otrasOptions: [
+        { label: "Ninguna", value: 1.09 },
+        { label: "Media", value: 0.981 },
+        { label: "Severa", value: 0.872 },
+      ],
     };
   },
   methods: {
@@ -113,7 +214,20 @@ export default {
         this.pendiente *
         this.otras;
       console.log("factorTotal:", this.factorTotal);
+      this.showFactorDialog = true; // Mostrar el diálogo con el factorTotal
+    },
+    calcularVidaUtil() {
+      this.vidaUtil = this.factorTotal * this.vidaPromedio;
+      console.log("---------------------------");
+      console.log("vidaUtil:", this.vidaUtil);
+      this.showVidaDialog = true; // Mostrar el diálogo con la vida útil
     },
   },
 };
 </script>
+
+<style scoped>
+.p-field {
+  margin-bottom: 1rem;
+}
+</style>
