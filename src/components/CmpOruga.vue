@@ -1,10 +1,12 @@
 <template>
   <div>
     <h1>Calculadora de producción</h1>
+
     <!-- Input field for "Pendiente cuesta arriba" -->
     <div>
       <label>Pendiente cuesta arriba:</label>
       <InputText v-model.number="pendiente" /><br /><br />
+
       <!-- Slider for selecting "Pendiente cuesta arriba" -->
       <Slider
         class="custom-slider"
@@ -15,6 +17,7 @@
       />
     </div>
     <br />
+
     <!-- Dropdown for selecting "Experiencia del Operador" -->
     <div>
       <label>Experiencia del Operador:</label>
@@ -27,12 +30,14 @@
       />
     </div>
     <br />
+
     <!-- Checkbox for selecting "Presencia de neblina" -->
     <div>
       <label>Presencia de neblina:</label>
       <Checkbox v-model="neblina" binary="true" />
     </div>
     <br />
+
     <!-- Dropdown for selecting "Eficiencia de trabajo" -->
     <div>
       <label>Eficiencia de trabajo:</label>
@@ -45,6 +50,7 @@
       />
     </div>
     <br />
+
     <!-- Dropdown for selecting "Material" -->
     <div>
       <label>Material:</label>
@@ -57,12 +63,14 @@
       />
     </div>
     <br />
+
     <!-- Input field for "Densidad" -->
     <div>
       <label>Densidad:</label>
       <InputNumber v-model="densidad" disabled />
     </div>
     <br />
+
     <!-- Dropdown for selecting "Factor de carga" -->
     <div>
       <label>Factor de carga:</label>
@@ -73,11 +81,43 @@
       />
     </div>
     <br />
+
     <!-- Button for triggering the calculation -->
-    <Button @click="logData">Calcular</Button>
-    <h3>TOTAL FACTORES DE CORRECCION: {{ totalFactores }}</h3>
+    <Button @click="logData" :disabled="!isFactoresCalculables"
+      >Calcular Factores de corrección</Button
+    >
+    <h3>TOTAL FACTORES DE CORRECCIÓN: {{ totalFactores }}</h3>
+
+    <!-- Dropdown for selecting "Tractor Clave" -->
+    <div>
+      <label>Tractor Clave:</label>
+      <Dropdown
+        v-model="clave"
+        :options="claveOptions"
+        placeholder="Seleccionar"
+        optionLabel="label"
+        optionValue="value"
+      />
+    </div>
+    <h3>VALOR DE CLAVE SELECCIONADA: {{ clave }}</h3>
+
+    <!-- Button for triggering the calculation -->
+    <Button @click="calcularProduccion" :disabled="!isProduccionCalculable"
+      >Calcular producción en yd3 s/h</Button
+    >
+    <br /><br />
+
+    <!-- TABLA DE RESULTADOS FINALES -->
+    <div class="tabla">
+      <DataTable :value="data" :rows="1" :paginator="false">
+        <Column field="label" header="Descripción"></Column>
+        <Column field="value" header="Valor"></Column>
+      </DataTable>
+    </div>
+    <br /><br />
   </div>
 </template>
+
 <script>
 export default {
   data() {
@@ -89,6 +129,7 @@ export default {
       eficiencia: null,
       material: null,
       densidad: 2.3 / 3.1,
+      //densidad: 0.742,
       factorCarga: null,
       pendienteOptions: [0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8],
       factorCargaOptions: [0.67, 0.75, 0.55, 0.74, 0.66, 0.82, 0.81],
@@ -109,6 +150,23 @@ export default {
         { label: "Rocas desgarradas", value: 0.6 },
       ],
       totalFactores: 0,
+      clave: null,
+      claveOptions: [
+        { label: "A - D11T", value: 3600 },
+        { label: "B - D10T", value: 2500 },
+        { label: "C - D9T", value: 1750 },
+        { label: "D - D8T", value: 1100 },
+        { label: "E - D7E", value: 950 },
+        { label: "F - D7R serie 2", value: 900 },
+        { label: "G - D6T", value: 750 },
+        { label: "H - D6N", value: 500 },
+      ],
+      data: [
+        { label: "FACTORES CORRECCIÓN", value: null },
+        { label: "PRODUCCIÓN MÁXIMA", value: null },
+        { label: "TOTAL", value: null },
+      ],
+      produccion: 0,
     };
   },
   methods: {
@@ -124,20 +182,53 @@ export default {
       });
       this.totalFactores =
         this.pendiente *
-        (this.xpOperador ? this.xpOperador : 1) *
+        this.xpOperador *
         (this.neblina ? 0.8 : 1) *
-        (this.eficiencia ? this.eficiencia : 1) *
-        (this.material ? this.material : 1) *
-        this.densidad *
-        (this.factorCarga ? this.factorCarga : 1);
+        this.eficiencia *
+        this.material *
+        this.factorCarga;
+    },
+    calcularProduccion() {
+      if (!this.clave) {
+        alert(
+          "Debe seleccionar un Tractor Clave antes de calcular la producción."
+        );
+        return;
+      }
+
+      // Realizar cálculo de producción
+      this.produccion = this.totalFactores * this.clave;
+      this.data[1].value = this.clave; // Asignar el valor de la clave a la tabla
+      this.data[0].value = this.totalFactores; // Asignar el valor de totalFactores a la tabla
+      this.data[2].value = this.produccion; // Valor estático para el total en la tabla
+    },
+  },
+  computed: {
+    isFactoresCalculables() {
+      return (
+        this.pendiente !== null &&
+        this.xpOperador !== null &&
+        this.eficiencia !== null &&
+        this.material !== null &&
+        this.factorCarga !== null
+      );
+    },
+    isProduccionCalculable() {
+      return this.totalFactores !== 0 && this.clave !== null;
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .custom-slider {
   width: 200px; /* Ajusta el ancho según tus necesidades */
   margin: 0 auto; /* Alinea horizontalmente al centro */
+}
+.tabla {
+  display: flex;
+  justify-content: center;
+  max-width: 400px; /* Ajusta el ancho máximo según tus necesidades */
+  margin: 0 auto; /* Centra horizontalmente */
 }
 </style>

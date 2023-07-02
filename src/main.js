@@ -20,7 +20,7 @@ import "primevue/resources/themes/lara-light-purple/theme.css";
 import "primevue/resources/primevue.min.css";
 //icons
 import "primeicons/primeicons.css";
-// cada componente se importa de forma separada +++++++++++++++++++++++++
+// cada componente se importa de forma separada +++++++++++++++++++++
 import Button from "primevue/button";
 import Menubar from "primevue/menubar";
 import InputText from "primevue/inputtext";
@@ -32,11 +32,13 @@ import RadioButton from "primevue/radiobutton";
 import Checkbox from "primevue/checkbox";
 import Knob from "primevue/knob";
 import Slider from "primevue/slider";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
 
 const app = createApp(App);
 app.use(PrimeVue);
 app.use(router);
-// aqui agregamos el componente ******************************************
+// aqui agregamos el componente ************************************
 app.component("Button", Button);
 app.component("Menubar", Menubar);
 app.component("InputText", InputText);
@@ -48,5 +50,7 @@ app.component("RadioButton", RadioButton);
 app.component("Checkbox", Checkbox);
 app.component("Knob", Knob);
 app.component("Slider", Slider);
+app.component("DataTable", DataTable);
+app.component("Column", Column);
 
 app.mount("#app");
