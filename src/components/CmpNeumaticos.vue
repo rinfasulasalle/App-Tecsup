@@ -1,6 +1,6 @@
 <template>
   <div class="neumaticos">
-    <h2>Formulario para calcular la vida útil de un neumático</h2>
+    <h1>Formulario para calcular la vida útil de un neumático</h1>
     <div class="p-field">
       <label for="mantenimiento">Mantenimiento:</label>
       <!-- Dropdown para seleccionar el mantenimiento -->

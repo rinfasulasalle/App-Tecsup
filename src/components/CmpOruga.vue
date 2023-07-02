@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Calculadora de producción</h2>
+    <h1>Calculadora de producción</h1>
     <!-- Input field for "Pendiente cuesta arriba" -->
     <div>
       <label>Pendiente cuesta arriba:</label>
