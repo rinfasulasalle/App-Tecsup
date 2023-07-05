@@ -1,5 +1,5 @@
 <template>
-  <div class="oruga">
+  <div>
     <h1>Calculadora de producción</h1>
 
     <!-- Input field for "Pendiente cuesta arriba" -->
@@ -221,16 +221,6 @@ export default {
 </script>
 
 <style scoped>
-.oruga {
-  background-image: url("https://assets.cnhindustrial.com/casece/latam/assets/Products/Crawler-Dozers/1150M/galeria-2-trator-esteiras-1150M.jpg");
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 .custom-slider {
   width: 200px; /* Ajusta el ancho según tus necesidades */
   margin: 0 auto; /* Alinea horizontalmente al centro */

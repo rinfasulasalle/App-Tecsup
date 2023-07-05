@@ -5,11 +5,11 @@ import router from "./router";
 import PrimeVue from "primevue/config";
 
 //theme
-//import "primevue/resources/themes/lara-light-indigo/theme.css";
+import "primevue/resources/themes/lara-light-indigo/theme.css";
 //import "primevue/resources/themes/arya-green/theme.css";
 //import "primevue/resources/themes/lara-light-blue/theme.css";
 //import "primevue/resources/themes/lara-light-indigo/theme.css";
-import "primevue/resources/themes/lara-light-purple/theme.css";
+//import "primevue/resources/themes/lara-light-purple/theme.css";
 //import "primevue/resources/themes/lara-light-teal/theme.css";
 //import "primevue/resources/themes/lara-dark-blue/theme.css";
 
