@@ -104,13 +104,195 @@ function handleSubmit() {
   const pasada = parseInt(selectedPasada.value.name);
   const velocidad = parseFloat(selectedVelocidad.value.code);
   const espesor = parseFloat(selectedEspesor.value.code);
+  //console.log(pasada, velocidad, espesor);
 
-  const productividad = pasada * velocidad * espesor;
+  const productividades = [
+    [419, 548, 628, 822, 837, 1095, 0, 0],
+    [628, 822, 942, 1232, 1256, 1643, 0, 0],
+    [837, 1095, 1256, 1643, 1675, 2191, 0, 0],
+    [314, 411, 471, 616, 628, 822, 0, 0],
+    [471, 616, 706, 924, 942, 1232, 0, 0],
+    [628, 822, 942, 1232, 1256, 1643, 0, 0],
+    [251, 329, 377, 493, 502, 657, 0, 0],
+    [377, 493, 565, 739, 754, 936, 0, 0],
+    [502, 657, 754, 986, 1005, 1314, 0, 0],
+    [286, 274, 314, 411, 419, 548, 0, 0],
+    [314, 411, 471, 616, 628, 822, 0, 0],
+    [419, 548, 628, 822, 837, 1095, 0, 0],
+    // ---------------------------------------
+    [488, 642, 731, 962, 975, 1283, 1219, 1604],
+    [713, 962, 1069, 1444, 1425, 1925, 1781, 2406],
+    [975, 1283, 1463, 1925, 1950, 2566, 2438, 3208],
+    [366, 481, 534, 722, 731, 962, 914, 1203],
+    [534, 722, 802, 1083, 1069, 1444, 1336, 1804],
+    [731, 962, 1097, 1444, 1463, 1925, 1828, 2406],
+    [293, 385, 439, 577, 585, 770, 731, 962],
+    [428, 577, 641, 866, 855, 1155, 1069, 1444],
+    [585, 770, 1155, 1170, 1540, 1463, 1925],
+    [244, 321, 366, 481, 488, 642, 609, 802],
+    [356, 481, 534, 722, 713, 962, 891, 1203],
+    [488, 642, 731, 962, 975, 1283, 1219, 1604],
+  ];
+  // Calculando productivida con switch case
+  let fila = 0;
+  let columna = 0;
+  switch (espesor) {
+    case 100:
+      columna = 0;
+      break;
+    case 150:
+      columna = 2;
+      break;
+    case 200:
+      columna = 4;
+      break;
+    case 250:
+      columna = 6;
+      break;
+    default:
+      //console.log("error espesor");
+      break;
+  }
+  switch (velocidad) {
+    case 6.5:
+      //console.log("6.5", selectedModel.value.name);
+      // fila = 0,3,6,9,12,15,18,21
+      if (selectedModel.value.name == "815F2") {
+        // fila = 0,3,6,9
+        switch (pasada) {
+          case 3:
+            fila = 0;
+            break;
+          case 4:
+            fila = 3;
+            break;
+          case 5:
+            fila = 6;
+            break;
+          case 6:
+            fila = 9;
+            break;
+          default:
+            break;
+        }
+      } else if (selectedModel.value.name == "8S5H") {
+        // fila = 12,15,18,21
+        switch (pasada) {
+          case 3:
+            fila = 12;
+            break;
+          case 4:
+            fila = 15;
+            break;
+          case 5:
+            fila = 18;
+            break;
+          case 6:
+            fila = 21;
+            break;
+          default:
+            break;
+        }
+      } else {
+        //console.log("error selectedModel.value.name ");
+      }
+      break;
+    case 9.5:
+      //console.log("9.5", selectedModel.value.name);
+      // fila = 1,4,7,10,13,16,19,22
+      if (selectedModel.value.name == "815F2") {
+        // fila = 1,4,7,10
+        switch (pasada) {
+          case 3:
+            fila = 1;
+            break;
+          case 4:
+            fila = 4;
+            break;
+          case 5:
+            fila = 7;
+            break;
+          case 6:
+            fila = 10;
+            break;
+          default:
+            break;
+        }
+      } else if (selectedModel.value.name == "8S5H") {
+        // fila = 13,16,19,22
+        switch (pasada) {
+          case 3:
+            fila = 13;
+            break;
+          case 4:
+            fila = 16;
+            break;
+          case 5:
+            fila = 19;
+            break;
+          case 6:
+            fila = 22;
+            break;
+          default:
+            break;
+        }
+      } else {
+        //console.log("error");
+      }
+      break;
+    case 13.0:
+      // fila = 2,5,8,11,14,17,20,23
+      if (selectedModel.value.name == "815F2") {
+        // fila = 2,5,8,11
+        switch (pasada) {
+          case 3:
+            fila = 2;
+            break;
+          case 4:
+            fila = 5;
+            break;
+          case 5:
+            fila = 8;
+            break;
+          case 6:
+            fila = 11;
+            break;
+          default:
+            break;
+        }
+      } else if (selectedModel.value.name == "8S5H") {
+        // fila = 14,17,20,23
+        switch (pasada) {
+          case 3:
+            fila = 14;
+            break;
+          case 4:
+            fila = 17;
+            break;
+          case 5:
+            fila = 20;
+            break;
+          case 6:
+            fila = 23;
+            break;
+          default:
+            break;
+        }
+      } else {
+        //console.log("error");
+      }
+      break;
+    default:
+      //console.log("error velocidad");
+      break;
+  }
+  console.table(selectedModel.value);
+  const productividad = productividades[fila][columna];
 
   dialogMessage.value = `La productividad es: ${productividad}`;
 
   respuesta.value = true; // Show the dialog box
-  console.log(dialogMessage.value);
+  //console.log(dialogMessage.value);
 }
 </script>
 <style>

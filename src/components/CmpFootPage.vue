@@ -16,8 +16,7 @@
       </a>
     </div>
     <div class="footer-item">
-      &copy; {{ currentYear }} Nombres y apellidos. Todos los derechos
-      reservados.
+      &copy; {{ currentYear }} Todos los derechos reservados.
     </div>
   </footer>
 </template>

@@ -4,11 +4,13 @@
       <template #start>
         <img
           src="https://www.tecsup.edu.pe/themes/tecsup/logo.svg"
-          height="60"
+          height="50"
         />
       </template>
       <template #end>
-        <InputText placeholder="Search" type="text" />
+        <button class="p-link" @click="cerrarSesion">
+          <i class="pi pi-fw pi-power-off"></i> Cerrar
+        </button>
       </template>
     </Menubar>
     <router-view />
@@ -20,11 +22,6 @@ export default {
   data() {
     return {
       items: [
-        {
-          label: "Home",
-          icon: "pi pi-fw pi-home",
-          to: "/",
-        },
         {
           label: "Compactadora",
           icon: "pi pi-fw pi-database",
@@ -41,51 +38,19 @@ export default {
           to: "/CmpNeumaticos",
         },
         {
-          label: "Quit",
-          icon: "pi pi-fw pi-power-off",
+          label: "Posesion",
+          icon: "pi pi-fw pi-database",
+          to: "/CmpCalculoPosesion",
         },
       ],
     };
   },
-};
-/*
-export default {
-  data() {
-    return {
-      items: [
-        {
-          label: "Home",
-          icon: "pi pi-fw pi-home",
-          items: [
-            {
-              label: "Home",
-              icon: "pi pi-fw pi-align-justify",
-              to: "/",
-            },
-            {
-              label: "Compactadora",
-              icon: "pi pi-fw pi-database",
-              to: "/CmpCompactadora",
-            },
-          ],
-        },
-        {
-          label: "Compactadora",
-          icon: "pi pi-fw pi-database",
-          to: "/CmpCompactadora",
-        },
-        {
-          label: "Oruga",
-          icon: "pi pi-fw pi-database",
-          to: "/CmpOruga",
-        },
-        {
-          label: "Quit",
-          icon: "pi pi-fw pi-power-off",
-        },
-      ],
-    };
+  methods: {
+    cerrarSesion() {
+      // Lógica para cerrar sesión
+      // ...
+      console.log("Cerrando sesion");
+    },
   },
 };
- */
 </script>

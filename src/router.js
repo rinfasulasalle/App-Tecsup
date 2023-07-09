@@ -1,19 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 // Importa tus componentes Vue
-import CmpHome from "./components/CmpHome.vue";
-import CmpAbout from "./components/CmpAbout.vue";
 import CmpCompactadora from "./components/CmpCompactadora.vue";
 import CmpOruga from "./components/CmpOruga.vue";
 import CmpNeumaticos from "./components/CmpNeumaticos.vue";
+import CmpCalculoPosesion from "./components/CmpCalculoPosesion.vue";
 const routes = [
   {
     path: "/",
-    component: CmpHome,
-  },
-  {
-    path: "/about",
-    component: CmpAbout,
+    component: CmpCompactadora,
   },
   {
     path: "/CmpCompactadora",
@@ -28,16 +23,12 @@ const routes = [
     component: CmpNeumaticos,
   },
   {
-    path: "/Profesor",
-    component: CmpHome,
+    path: "/CmpCalculoPosesion",
+    component: CmpCalculoPosesion,
   },
   {
     path: "/",
-    component: CmpHome,
-  },
-  {
-    path: "/",
-    component: CmpHome,
+    component: CmpCompactadora,
   },
 ];
 

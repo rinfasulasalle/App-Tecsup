@@ -82,17 +82,19 @@
       ></Dropdown>
     </div>
     <Button @click="logData" class="p-button-success" label="Calcular"></Button>
-    <div>factorTotal: {{ factorTotal }}</div>
+    <h3>
+      <div>factorTotal: {{ factorTotal }}</div>
 
-    <div>Vida Promedio: {{ vidaPromedio }}</div>
-
+      <div>Vida Promedio: {{ vidaPromedio }}</div>
+    </h3>
     <Button
       @click="calcularVidaUtil"
       class="p-button-primary"
       label="Calcular Vida Util"
     ></Button>
-    <div>Vida util: {{ vidaUtil }}</div>
-
+    <h3>
+      <div>Vida util: {{ vidaUtil }}</div>
+    </h3>
     <!-- Diálogo para mostrar el factorTotal -->
     <Dialog
       v-model="showFactorDialog"
@@ -194,15 +196,15 @@ export default {
   },
   methods: {
     logData() {
-      console.log("---------------------------");
-      console.log("Mantenimiento:", this.mantenimiento);
-      console.log("Velocidades Máximas:", this.velocidades);
-      console.log("Condiciones del Terreno:", this.condiciones);
-      console.log("Posición de las Ruedas:", this.posiciones);
-      console.log("Cargas:", this.carga);
-      console.log("Curvas:", this.curvas);
-      console.log("Pendiente:", this.pendiente);
-      console.log("Otras combinaciones varias:", this.otras);
+      //console.log("---------------------------");
+      //console.log("Mantenimiento:", this.mantenimiento);
+      //console.log("Velocidades Máximas:", this.velocidades);
+      //console.log("Condiciones del Terreno:", this.condiciones);
+      //console.log("Posición de las Ruedas:", this.posiciones);
+      //console.log("Cargas:", this.carga);
+      //console.log("Curvas:", this.curvas);
+      //console.log("Pendiente:", this.pendiente);
+      //console.log("Otras combinaciones varias:", this.otras);
       // Multiplicar todas las variables
       this.factorTotal =
         this.mantenimiento *
@@ -213,13 +215,13 @@ export default {
         this.curvas *
         this.pendiente *
         this.otras;
-      console.log("factorTotal:", this.factorTotal);
+      //console.log("factorTotal:", this.factorTotal);
       this.showFactorDialog = true; // Mostrar el diálogo con el factorTotal
     },
     calcularVidaUtil() {
       this.vidaUtil = this.factorTotal * this.vidaPromedio;
-      console.log("---------------------------");
-      console.log("vidaUtil:", this.vidaUtil);
+      //console.log("---------------------------");
+      //console.log("vidaUtil:", this.vidaUtil);
       this.showVidaDialog = true; // Mostrar el diálogo con la vida útil
     },
   },

@@ -1,11 +1,14 @@
 <template>
-  <CmpRouter />
-  <CmpFootPage />
+  <div id="app">
+    <CmpRouter />
+    <CmpFootPage />
+  </div>
 </template>
 
 <script>
 import CmpRouter from "./components/CmpRouter.vue";
 import CmpFootPage from "./components/CmpFootPage.vue";
+
 export default {
   name: "App",
   components: {
@@ -22,5 +25,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
