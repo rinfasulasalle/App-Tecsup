@@ -1,19 +1,16 @@
 <template>
   <div id="app">
     <CmpRouter />
-    <CmpFootPage />
   </div>
 </template>
 
 <script>
 import CmpRouter from "./components/CmpRouter.vue";
-import CmpFootPage from "./components/CmpFootPage.vue";
 
 export default {
   name: "App",
   components: {
     CmpRouter,
-    CmpFootPage,
   },
 };
 </script>
