@@ -34,6 +34,8 @@ import Knob from "primevue/knob";
 import Slider from "primevue/slider";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import Password from "primevue/password";
+import Card from "primevue/card";
 
 const app = createApp(App);
 app.use(PrimeVue);
@@ -52,5 +54,6 @@ app.component("Knob", Knob);
 app.component("Slider", Slider);
 app.component("DataTable", DataTable);
 app.component("Column", Column);
-
+app.component("Password", Password);
+app.component("Card", Card);
 app.mount("#app");

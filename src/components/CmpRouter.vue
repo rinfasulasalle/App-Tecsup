@@ -9,7 +9,7 @@
       </template>
       <template #end>
         <button class="p-link" @click="cerrarSesion">
-          <i class="pi pi-fw pi-power-off"></i> Cerrar
+          <i class="pi pi-fw pi-power-off"></i> Logout
         </button>
       </template>
     </Menubar>
@@ -47,9 +47,11 @@ export default {
   },
   methods: {
     cerrarSesion() {
-      // Lógica para cerrar sesión
-      // ...
-      console.log("Cerrando sesion");
+      // Actualizar el estado de sesión a "false"
+      this.$emit("logout");
+
+      // Redirigir al formulario de inicio de sesión
+      this.$router.push("/login");
     },
   },
 };
