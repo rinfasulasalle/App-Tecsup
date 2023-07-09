@@ -143,9 +143,15 @@
     </form>
   </div>
   <div class="tabla">
-    <DataTable :value="data">
+    <DataTable :value="data_tabla1">
       <Column field="column1" header="MAQUINA"></Column>
-      <Column field="column2" :header="modeloMaquina"></Column>
+      <Column field="column2"></Column>
+    </DataTable>
+  </div>
+  <div class="tabla">
+    <DataTable :value="data_tabla2">
+      <Column field="column1" header="COSTO DE POSESIÓN"></Column>
+      <Column field="column2"></Column>
     </DataTable>
   </div>
 </template>
@@ -168,18 +174,125 @@ export default {
         { label: "Tractor de cadenas D8T", value: "Tractor de cadenas D8T" },
         { label: "Camión 797F", value: "Camión 797F" },
       ],
-      data: [
+      data_tabla1: [
         {
           column1: "Periodo estimado de posesión (años)",
           column2: 6,
         },
         {
           column1: "Utilización estimada (horas/año)",
-          column2: "Valor 5",
+          column2: "",
         },
         {
           column1: "Tiempo de posesión (total de horas)",
-          column2: "Valor 8",
+          column2: "",
+        },
+      ],
+      data_tabla2: [
+        {
+          column1: "a. Precio de entrega (incluyendo accesorios)",
+          column2: "",
+        },
+        {
+          column1:
+            "b. Menos el costo de reemplazo de los neumáticos (si se desea)",
+          column2: "",
+        },
+        {
+          column1: "c. Precio de entrega menos neumáticos",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "Menos valor residual al reemplazo",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "a. Valora recobrar mediante el trabajo ",
+          column2: "",
+        },
+        {
+          column1: "b. Costo por hora ",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "Costos de interes",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "Seguro",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "Impuestos",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "COSTO TOTAL POR HORA POSESION ",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
+        },
+        {
+          column1: "",
+          column2: "",
         },
       ],
     };
@@ -217,10 +330,62 @@ export default {
       );
 
       // Update "valor 5" and "valor 8" based on horasUtilizacion
-      this.data[1].column2 = this.horasUtilizacion;
-      this.data[2].column2 = 6 * this.horasUtilizacion;
+      this.data_tabla1[1].column2 = this.horasUtilizacion;
+      this.data_tabla1[2].column2 = 6 * this.horasUtilizacion;
+      // ----
+      this.data_tabla2[0].column2 = this.precioEntrega;
+      this.data_tabla2[1].column2 = this.precioNeumaticos * 6;
+      this.data_tabla2[2].column2 =
+        this.data_tabla2[0].column2 - this.data_tabla2[1].column2;
+      // ---
+      // para el punto 2 NECESITO VALIDAR cual ha seleccionado
+      let porcentaje = 0;
+      if (this.modeloMaquina.value == "Camión 797F") {
+        porcentaje = 0.4;
+      } else {
+        porcentaje = 0.6;
+      }
+      //console.log(porcentaje);
+      //console.log(this.data_tabla2[2].column2, porcentaje);
+      this.data_tabla2[4].column2 = this.data_tabla2[2].column2 * porcentaje;
+      // ----
+      this.data_tabla2[6].column2 =
+        this.data_tabla2[2].column2 - this.data_tabla2[4].column2;
+      // ---
+      this.data_tabla2[7].column2 =
+        this.data_tabla2[6].column2 / this.data_tabla1[2].column2;
+      //console.log(this.data_tabla2[6].column2, this.data_tabla1[2].column2);
+      // ---9
+      let $J$27 = this.data_tabla1[0].column2;
+      let $J$28 = this.data_tabla1[1].column2;
+      let G41 = this.tasaInteres / 100;
+      let $J$33 = this.data_tabla2[2].column2;
+      //console.log("$J$27", $J$27);
+      //console.log("G41", G41);
+      //console.log("$J$28", $J$28);
+      //console.log("$J$33", $J$33);
 
-      this.clearFields(); // Limpiar los campos del formulario
+      this.data_tabla2[9].column2 =
+        ((($J$27 + 1) / (2 * $J$27)) * $J$33 * G41) / $J$28;
+      // ---
+      let G43 = this.tasaSeguros / 100;
+      this.data_tabla2[11].column2 =
+        ((($J$27 + 1) / (2 * $J$27)) * $J$33 * G43) / $J$28;
+      // ---
+      let G45 = this.tasaImpuestos / 100;
+      this.data_tabla2[13].column2 =
+        ((($J$27 + 1) / (2 * $J$27)) * $J$33 * G45) / $J$28;
+      // ---
+      this.data_tabla2[15].column2 =
+        this.data_tabla2[7].column2 +
+        this.data_tabla2[9].column2 +
+        this.data_tabla2[11].column2 +
+        this.data_tabla2[13].column2;
+      // ---
+      // ---
+      // ---
+
+      //this.clearFields(); // Limpiar los campos del formulario
     },
     clearFields() {
       this.modeloMaquina = null;
