@@ -35,7 +35,15 @@
           currency="USD"
         />
       </div>
-
+      <div class="form-group">
+        <label for="precio-entrega">Precio de neumaticos (USD/unidad) </label>
+        <InputNumber
+          id="precio-entrega"
+          v-model="precioNeumaticos"
+          mode="currency"
+          currency="USD"
+        />
+      </div>
       <div v-if="modeloMaquina === 'Camion 797F'" class="form-group">
         <label for="precio-neumaticos"
           >Precio de neumáticos en USD por unidad
@@ -49,42 +57,49 @@
       </div>
 
       <div class="form-group">
-        <label for="valor-residual">Valor residual al reemplazo </label>
+        <label for="valor-residual">Valor residual al reemplazo (%) </label>
         <InputNumber
           id="valor-residual"
           v-model="valorResidual"
           mode="decimal"
           suffix=" %"
+          :max="100"
         />
       </div>
 
       <div class="form-group">
-        <label for="tasa-interes">Tasa de interés </label>
+        <label for="tasa-interes">Tasa de interés (%) </label>
         <InputNumber
           id="tasa-interes"
           v-model="tasaInteres"
           mode="decimal"
           suffix=" %"
+          :max="100"
+          disabled
         />
       </div>
 
       <div class="form-group">
-        <label for="tasa-seguros">Tasa de seguros </label>
+        <label for="tasa-seguros">Tasa de seguros (%) </label>
         <InputNumber
           id="tasa-seguros"
           v-model="tasaSeguros"
           mode="decimal"
           suffix=" %"
+          :max="100"
+          disabled
         />
       </div>
 
       <div class="form-group">
-        <label for="tasa-impuestos">Tasa de impuestos </label>
+        <label for="tasa-impuestos">Tasa de impuestos (%) </label>
         <InputNumber
           id="tasa-impuestos"
           v-model="tasaImpuestos"
           mode="decimal"
           suffix=" %"
+          :max="100"
+          disabled
         />
       </div>
 
@@ -127,8 +142,13 @@
       <Button type="submit" label="Enviar" />
     </form>
   </div>
+  <div class="tabla">
+    <DataTable :value="data">
+      <Column field="column1" header="MAQUINA"></Column>
+      <Column field="column2" :header="modeloMaquina"></Column>
+    </DataTable>
+  </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -138,9 +158,9 @@ export default {
       precioEntrega: null,
       precioNeumaticos: null,
       valorResidual: null,
-      tasaInteres: null,
-      tasaSeguros: null,
-      tasaImpuestos: null,
+      tasaInteres: 17,
+      tasaSeguros: 5,
+      tasaImpuestos: 12,
       precioCombustible: null,
       costoMantenimientoPreventivo: null,
       costoMantenimientoCorrectivo: null,
@@ -148,33 +168,41 @@ export default {
         { label: "Tractor de cadenas D8T", value: "Tractor de cadenas D8T" },
         { label: "Camión 797F", value: "Camión 797F" },
       ],
+      data: [
+        {
+          column1: "Periodo estimado de posesión (años)",
+          column2: 6,
+        },
+        {
+          column1: "Utilización estimada (horas/año)",
+          column2: "Valor 5",
+        },
+        {
+          column1: "Tiempo de posesión (total de horas)",
+          column2: "Valor 8",
+        },
+      ],
     };
   },
   methods: {
     submitForm() {
       // Lógica para procesar el formulario
       console.log("Formulario enviado");
-      console.log("Modelo de Máquina:", this.modeloMaquina);
+      console.log("Modelo de Máquina:", this.modeloMaquina.value);
       console.log(
         "Horas totales al año de utilización:",
         this.horasUtilizacion
       );
       console.log("Precio de entrega en USD:", this.precioEntrega);
 
-      if (this.modeloMaquina === "Camión 797F") {
-        console.log(
-          "Precio de neumáticos en USD por unidad:",
-          this.precioNeumaticos
-        );
-      }
-      this.tasaInteres = this.tasaInteres / 100;
-      this.tasaInteres = this.tasaSeguros / 100;
-      this.tasaInteres = this.tasaImpuestos / 100;
-
-      console.log("Valor residual al reemplazo:", this.valorResidual);
-      console.log("Tasa de interés:", this.tasaInteres);
-      console.log("Tasa de seguros:", this.tasaSeguros);
-      console.log("Tasa de impuestos:", this.tasaImpuestos);
+      console.log(
+        "Precio de neumáticos en USD por unidad:",
+        this.precioNeumaticos
+      );
+      console.log("Valor residual al reemplazo:", this.valorResidual / 100);
+      console.log("Tasa de interés:", this.tasaInteres / 100);
+      console.log("Tasa de seguros:", this.tasaSeguros / 100);
+      console.log("Tasa de impuestos:", this.tasaImpuestos / 100);
       console.log(
         "Precio de combustible en USD/galón:",
         this.precioCombustible
@@ -187,11 +215,26 @@ export default {
         "Costo de mantenimiento correctivo en USD/hora:",
         this.costoMantenimientoCorrectivo
       );
+
+      // Update "valor 5" and "valor 8" based on horasUtilizacion
+      this.data[1].column2 = this.horasUtilizacion;
+      this.data[2].column2 = 6 * this.horasUtilizacion;
+
+      this.clearFields(); // Limpiar los campos del formulario
+    },
+    clearFields() {
+      this.modeloMaquina = null;
+      this.horasUtilizacion = null;
+      this.precioEntrega = null;
+      this.precioNeumaticos = null;
+      this.valorResidual = null;
+      this.precioCombustible = null;
+      this.costoMantenimientoPreventivo = null;
+      this.costoMantenimientoCorrectivo = null;
     },
   },
 };
 </script>
-
 <style scoped>
 h1 {
   margin-top: 2rem;
@@ -204,5 +247,9 @@ h1 {
 
 .form-group {
   margin-bottom: 1rem;
+}
+
+.tabla {
+  margin-top: 2rem;
 }
 </style>
