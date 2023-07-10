@@ -7,11 +7,6 @@
           height="50"
         />
       </template>
-      <template #end>
-        <button class="p-link" @click="cerrarSesion">
-          <i class="pi pi-fw pi-power-off"></i> Logout
-        </button>
-      </template>
     </Menubar>
     <router-view />
   </div>
@@ -44,15 +39,6 @@ export default {
         },
       ],
     };
-  },
-  methods: {
-    cerrarSesion() {
-      // Actualizar el estado de sesión a "false"
-      this.$emit("logout");
-
-      // Redirigir al formulario de inicio de sesión
-      this.$router.push("/login");
-    },
   },
 };
 </script>
