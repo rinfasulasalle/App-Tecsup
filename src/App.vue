@@ -3,14 +3,14 @@
     <div v-if="!loggedIn">
       <div class="login-form">
         <h1>Login Form</h1>
-        <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">
+        <div class="input-group">
+          <span class="input-group-addon">
             <i class="pi pi-user"></i>
           </span>
           <InputText v-model="username" placeholder="Usuario"></InputText>
         </div>
-        <div class="p-inputgroup">
-          <span class="p-inputgroup-addon">
+        <div class="input-group">
+          <span class="input-group-addon">
             <i class="pi pi-lock"></i>
           </span>
           <Password
@@ -28,7 +28,7 @@
         <h2>Bienvenido a mi app, {{ usuarioIngresado }}</h2>
         <Button
           label="Cerrar sesión"
-          class="logout-button"
+          class="logout-button p-button-danger"
           @click="logout"
         ></Button>
       </div>
@@ -116,18 +116,47 @@ export default {
 }
 
 .login-form {
-  margin-top: 0px;
+  margin-top: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 90vh;
+  height: 80vh;
 }
 
-.form-content {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 20px;
-  border-radius: 8px;
+h1 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.input-group-addon {
+  background-color: #f4f4f4;
+  padding: 8px;
+  border-radius: 4px 0 0 4px;
+}
+
+.p-inputgroup-addon {
+  display: flex;
+  align-items: center;
+}
+
+input {
+  height: 36px;
+  border-radius: 0 4px 4px 0;
+  border: 1px solid #ccc;
+  padding: 4px;
+}
+
+Button {
+  width: 200px;
+  margin-top: 10px;
 }
 
 .welcome-message {

@@ -5,7 +5,7 @@ import router from "./router";
 import PrimeVue from "primevue/config";
 
 //theme
-//import "primevue/resources/themes/lara-light-indigo/theme.css";
+import "primevue/resources/themes/lara-light-indigo/theme.css";
 //import "primevue/resources/themes/arya-green/theme.css";
 //import "primevue/resources/themes/lara-light-blue/theme.css";
 //import "primevue/resources/themes/lara-light-indigo/theme.css";
@@ -14,7 +14,7 @@ import PrimeVue from "primevue/config";
 //import "primevue/resources/themes/lara-light-teal/theme.css";
 //import "primevue/resources/themes/lara-dark-blue/theme.css";
 //
-import "primevue/resources/themes/saga-orange/theme.css";
+//import "primevue/resources/themes/saga-orange/theme.css";
 //import "primevue/resources/themes/vela-orange/theme.css";
 //import "primevue/resources/themes/arya-orange/theme.css";
 //import "primevue/resources/themes/lara-dark-indigo/theme.css";
