@@ -55,7 +55,40 @@
           currency="USD"
         />
       </div>
+      <!-- New mini-form -->
+      <form @submit.prevent="submitMiniForm">
+        <h3>Mini formulario para Tren de rodaje</h3>
+        <div class="form-group">
+          <label for="impacto">Impacto </label>
+          <Dropdown
+            v-model="impacto"
+            :options="options"
+            optionLabel="name"
+            placeholder="Seleccione impacto"
+          />
+        </div>
+        <div class="form-group">
+          <label for="abrasividad">Abrasividad </label>
+          <Dropdown
+            v-model="abrasividad"
+            :options="options"
+            optionLabel="name"
+            placeholder="Seleccione impacto"
+          />
+        </div>
+        <div class="form-group">
+          <label for="z">z </label>
+          <Dropdown
+            v-model="z"
+            :options="options"
+            optionLabel="name"
+            placeholder="Seleccione z"
+          />
+        </div>
 
+        <Button type="submit" label="Enviar mini-form" />
+      </form>
+      <!-- End of mini-form -->
       <div class="form-group">
         <label for="valor-residual">Valor residual al reemplazo (%) </label>
         <InputNumber
@@ -151,6 +184,13 @@
   <div class="tabla">
     <DataTable :value="data_tabla2">
       <Column field="column1" header="COSTO DE POSESIÓN"></Column>
+      <Column field="column2"></Column>
+    </DataTable>
+  </div>
+  <br />
+  <div class="tabla">
+    <DataTable :value="data_tabla3">
+      <Column field="column1" header="COSTO DE OPERACIÓN"></Column>
       <Column field="column2"></Column>
     </DataTable>
   </div>
@@ -254,45 +294,95 @@ export default {
           column1: "COSTO TOTAL POR HORA POSESION ",
           column2: "",
         },
+      ],
+      data_tabla3: [
         {
-          column1: "",
+          column1: "COMBUSTIBLE: UNITARIO  X  CONSUMO",
           column2: "",
         },
+        { column1: "", column2: "" },
         {
-          column1: "",
+          column1: "Mantenimiento Planificado",
+          column2: 12,
+        },
+        { column1: "", column2: "" },
+        {
+          column1: "a. Neumaticos:costo de reemlazo / horas de uso",
           column2: "",
         },
+        { column1: "", column2: "" },
+        { column1: "b. Tren de rodaje", column2: "" }, //6
+        { column1: "", column2: "" },
+        { column1: "Costo de reparaciones (por hora)", column2: 13 },
+        { column1: "", column2: "" },
         {
-          column1: "",
+          column1: "Piezas de desgaste especiales: costo / vida util",
           column2: "",
         },
+        { column1: "", column2: "" },
+        { column1: "COSTOS TOTALES DE OPERACION", column2: "" },
+        { column1: "", column2: "" },
+
+        { column1: "POSESION Y OPERACIÓN DE LA MAQUINA", column2: "" },
+        { column1: "", column2: "" },
         {
-          column1: "",
-          column2: "",
+          column1: "SALARIO HORARIO DEL OPERADOR (incluya beneficios sociales)",
+          column2: 13,
+        },
+        { column1: "", column2: "" },
+        { column1: "COSTO TOTAL DE POSESION Y OPERACIÓN", column2: "" },
+      ],
+      options: [
+        { name: "Alto", impacto: 0.3, abrasividad: 0.4, z: 1 },
+        { name: "Moderado", impacto: 0.2, abrasividad: 0.2, z: 0.5 },
+        { name: "Bajo", impacto: 0.1, abrasividad: 0.1, z: 0.2 },
+      ],
+      impacto: null,
+      abrasividad: null,
+      z: null,
+      factor: null,
+      // ----
+      cantidad: null,
+      costo: null,
+      duracion: null,
+      costo_hora: null,
+      piezasTractor: [
+        {
+          name: "puntas",
+          cantidad: 11,
+          costo: 40,
+          duracion: 1200,
+          costo_hora: null,
         },
         {
-          column1: "",
-          column2: "",
+          name: "cantoneras",
+          cantidad: 4,
+          costo: 120,
+          duracion: 800,
+          costo_hora: null,
         },
         {
-          column1: "",
-          column2: "",
+          name: "cuchilas",
+          cantidad: 11,
+          costo: 30,
+          duracion: 1200,
+          costo_hora: null,
+        },
+      ],
+      piezasCamion: [
+        {
+          name: "Plancha base",
+          cantidad: 12,
+          costo: 800,
+          duracion: 4000,
+          costo_hora: null,
         },
         {
-          column1: "",
-          column2: "",
-        },
-        {
-          column1: "",
-          column2: "",
-        },
-        {
-          column1: "",
-          column2: "",
-        },
-        {
-          column1: "",
-          column2: "",
+          name: "Plancha de desgaste",
+          cantidad: 18,
+          costo: 1200,
+          duracion: 4000,
+          costo_hora: null,
         },
       ],
     };
@@ -383,9 +473,111 @@ export default {
         this.data_tabla2[13].column2;
       // ---
       // ---
+      let unitario = 4;
+      // Lista consumos
+      const consumoD8TT = [
+        [23.5, 33.7],
+        [6.2, 8.9],
+        [33.7, 43.5],
+        [8.9, 11.5],
+        [43.9, 53.7],
+        [11.6, 144.2],
+      ];
+      const consumo797F = [
+        [146.8, 220.3],
+        [38.8, 58.2],
+        [220.3, 293.7],
+        [58.2, 77.6],
+        [293.7, 367.1],
+        [77.6, 97.0],
+      ];
+      if (this.modeloMaquina.value == "Camión 797F") {
+        this.data_tabla3[0].column2 = unitario * this.promedio(consumo797F[3]);
+      } else {
+        this.data_tabla3[0].column2 = unitario * this.promedio(consumoD8TT[3]);
+      }
+      // ---
+      //console.log(this.precioNeumaticos);
+      if (this.modeloMaquina.value == "Camión 797F") {
+        this.data_tabla3[4].column2 =
+          (this.precioNeumaticos * 6) / ((6000 + 4000) / 2);
+      } else {
+        this.data_tabla3[4].column2 = null;
+      }
+      //this.submitMiniForm();
+      // ---
+      // --- Tren de rodaje
+      console.log(
+        this.impacto.impacto,
+        this.abrasividad.abrasividad,
+        this.z.z,
+        "*",
+        this.factor
+      );
+      if (this.modeloMaquina.value == "Tractor de cadenas D8T") {
+        this.factor = 9.6;
+      } else {
+        this.factor = null;
+      }
+      this.data_tabla3[6].column2 =
+        (this.impacto.impacto + this.abrasividad.abrasividad + this.z.z) *
+        this.factor;
+      // --- Piezas de desgaste especiales: costo / vida util
+      this.piezasTractor[0].costo_hora =
+        (this.piezasTractor[0].cantidad * this.piezasTractor[0].costo) /
+        this.piezasTractor[0].duracion;
+      this.piezasTractor[1].costo_hora =
+        (this.piezasTractor[1].cantidad * this.piezasTractor[1].costo) /
+        this.piezasTractor[1].duracion;
+      this.piezasTractor[2].costo_hora =
+        (this.piezasTractor[2].cantidad * this.piezasTractor[2].costo) /
+        this.piezasTractor[2].duracion;
+      //-
+      this.piezasCamion[0].costo_hora =
+        (this.piezasCamion[0].cantidad * this.piezasCamion[0].costo) /
+        this.piezasCamion[0].duracion;
+      this.piezasCamion[1].costo_hora =
+        (this.piezasCamion[1].cantidad * this.piezasCamion[1].costo) /
+        this.piezasCamion[1].duracion;
+      if (this.modeloMaquina.value == "Tractor de cadenas D8T") {
+        this.data_tabla3[10].column2 =
+          this.piezasTractor[0].costo_hora +
+          this.piezasTractor[1].costo_hora +
+          this.piezasTractor[2].costo_hora;
+      } else if (this.modeloMaquina.value == "Camión 797F") {
+        this.data_tabla3[10].column2 =
+          this.piezasCamion[0].costo_hora + this.piezasCamion[1].costo_hora;
+      }
+      // ---COSTOS TOTALES DE OPERACION
+      this.data_tabla3[12].column2 =
+        this.data_tabla3[0].column2 +
+        this.data_tabla3[2].column2 +
+        this.data_tabla3[6].column2 +
+        this.data_tabla3[8].column2 +
+        this.data_tabla3[10].column2;
+      // ---POSESION Y OPERACIÓN DE LA MAQUINA
+      this.data_tabla3[14].column2 =
+        this.data_tabla2[15].column2 + this.data_tabla3[12].column2;
+      // ---COSTO TOTAL DE POSESION Y OPERACIÓN
+      this.data_tabla3[18].column2 =
+        this.data_tabla3[14].column2 + this.data_tabla3[16].column2;
       // ---
 
       //this.clearFields(); // Limpiar los campos del formulario
+    },
+    submitMiniForm() {
+      console.log("Mini-form submitted");
+      console.log("Impacto:", this.impacto.impacto);
+      console.log("Abrasividad:", this.abrasividad.abrasividad);
+      console.log("Z:", this.z.z);
+    },
+    promedio(lista) {
+      let suma = 0;
+      for (let i = 0; i < lista.length; i++) {
+        suma += lista[i];
+      }
+      let promedio = suma / lista.length;
+      return promedio;
     },
     clearFields() {
       this.modeloMaquina = null;
